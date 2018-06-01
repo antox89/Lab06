@@ -551,9 +551,14 @@ public class Principal extends javax.swing.JFrame {
                 
             }
             
-        }catch(Exception e){
+        }/*catch(Exception e){
             JOptionPane.showMessageDialog(
                     jd_mundoDisco,"Error, no se guardaron los datos",
+                    "Error",JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }*/catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(
+                    jd_mundoDisco,"Ingrese un número",
                     "Error",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_bt_addMundoMouseClicked
@@ -580,6 +585,8 @@ public class Principal extends javax.swing.JFrame {
             region=tf_nombreRegion.getText();
             cantidad_especies=Integer.parseInt(tf_cantidadEsp.getText());
             peso=Integer.parseInt(tf_pesoCriatura.getText());
+            
+            
             
             if(raza.equals("")||region.equals("")){
                 JOptionPane.showMessageDialog(jd_mundoDisco,"Ingrese todos los campos.");
