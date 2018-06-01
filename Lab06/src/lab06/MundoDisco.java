@@ -18,6 +18,10 @@ public class MundoDisco {
         this.nombre = nombre;
         this.peso = peso;
     }
+    
+    public void agregarCriatura(Criaturas criatura){
+        this.listaCriaturas.add(criatura);
+    }
 
     public String getNombre() {
         return nombre;
@@ -45,7 +49,7 @@ public class MundoDisco {
 
     @Override
     public String toString() {
-        return nombre;
+        return "Mundo Disco - "+nombre;
     }
 
     
