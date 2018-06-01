@@ -1,6 +1,7 @@
 
 package lab06;
 
+import java.math.MathContext;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -73,6 +74,7 @@ public class Principal extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         bt_adminMundo = new javax.swing.JButton();
         bt_admincriaturas = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -336,6 +338,11 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jl_mundoDisco);
 
         bt_addCArbol.setText("Agregar Arbol");
+        bt_addCArbol.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_addCArbolMouseClicked(evt);
+            }
+        });
 
         bt_addMArbol.setText("Agregar Arbol");
         bt_addMArbol.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -426,6 +433,17 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(bt_admincriaturas);
+
+        jButton1.setText("jButton1");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jToolBar1.add(jButton1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -563,20 +581,130 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_admincriaturasMouseClicked
 
     private void bt_addMArbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_addMArbolMouseClicked
+        
         if(jl_mundoDisco.getSelectedIndex()>=0){
             
-            DefaultTreeModel modeloArbol = (DefaultTreeModel)jt_universo.getModel();
+            DefaultTreeModel modeloArbol 
+                    = (DefaultTreeModel)jt_universo.getModel();
+            
             DefaultMutableTreeNode raiz=
                     (DefaultMutableTreeNode)modeloArbol.getRoot();
             
+            DefaultListModel modeloLista 
+                    = (DefaultListModel)jl_mundoDisco.getModel();
+            
+            String nombre;
+            int peso;
+            
+            nombre=((MundoDisco)modeloLista.get(
+                    jl_mundoDisco.getSelectedIndex())).getNombre();
+            
+            peso=((MundoDisco)modeloLista.get(
+                    jl_mundoDisco.getSelectedIndex())).getPeso();
+            
+            int centinela=-1;
+            
+            for (int i = 0; i < raiz.getChildCount(); i++) {
+                
+                if(raiz.getChildAt(i).toString().equals(nombre)){
+                    
+                    DefaultMutableTreeNode p
+                            = new DefaultMutableTreeNode(
+                                    new MundoDisco(nombre,peso));
+                    
+                    ((DefaultMutableTreeNode)raiz.getChildAt(i)).add(p);
+                    centinela = 1;
+                }//final if
+            }
+            if(centinela==-1){
+                DefaultMutableTreeNode n =
+                        new DefaultMutableTreeNode(nombre);
+                DefaultMutableTreeNode p
+                        = new DefaultMutableTreeNode(new MundoDisco(nombre,peso));
+                n.add(p);
+                raiz.add(n);
+            }
+            System.out.println("Funciona");
+            modeloArbol.reload();
             
             
         }else{
             JOptionPane.showMessageDialog(
                     this,"Seleccione un Mundo Disco","Error",
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_bt_addMArbolMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        
+        DefaultTreeModel m = (DefaultTreeModel)jt_universo.getModel();
+        DefaultMutableTreeNode raiz
+                = (DefaultMutableTreeNode)m.getRoot();
+        
+        DefaultMutableTreeNode nodo_mundo
+                = new DefaultMutableTreeNode(new MundoDisco("Planeta",0));
+        
+        DefaultMutableTreeNode criatura
+                = new DefaultMutableTreeNode(new Criaturas());
+        
+        nodo_mundo.add(criatura);
+        raiz.add(nodo_mundo);
+        m.reload();
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void bt_addCArbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_addCArbolMouseClicked
+        if(jl_criaturas.getSelectedIndex()>=0){
+            
+            DefaultTreeModel modeloArbol 
+                    = (DefaultTreeModel)jt_universo.getModel();
+            
+            DefaultMutableTreeNode raiz=
+                    (DefaultMutableTreeNode)modeloArbol.getRoot();
+            
+            DefaultListModel modeloLista 
+                    = (DefaultListModel)jl_criaturas.getModel();
+            
+            String nombre;
+            int peso;
+            
+            nombre=((Criaturas)modeloLista.get(
+                    jl_criaturas.getSelectedIndex())).getRaza();
+            
+            peso=((Criaturas)modeloLista.get(
+                    jl_criaturas.getSelectedIndex())).getPeso();
+            
+            int centinela=-1;
+            
+            for (int i = 0; i < raiz.getChildCount(); i++) {
+                
+                if(raiz.getChildAt(i).toString().equals(nombre)){
+                    
+                    DefaultMutableTreeNode p
+                            = new DefaultMutableTreeNode(
+                                    new Criaturas());
+                    
+                    ((DefaultMutableTreeNode)raiz.getChildAt(i)).add(p);
+                    centinela = 1;
+                }//final if
+            }
+            if(centinela==-1){
+                DefaultMutableTreeNode n =
+                        new DefaultMutableTreeNode(nombre);
+                DefaultMutableTreeNode p
+                        = new DefaultMutableTreeNode(new Criaturas());
+                n.add(p);
+                raiz.add(n);
+            }
+            System.out.println("Funciona");
+            modeloArbol.reload();
+            
+            
+        }else{
+            JOptionPane.showMessageDialog(
+                    this,"Seleccione un Mundo Disco","Error",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_bt_addCArbolMouseClicked
 
     /**
      * @param args the command line arguments
@@ -623,6 +751,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton bt_eliminar;
     private javax.swing.JButton bt_eliminarCriaturas;
     private javax.swing.JButton bt_modificarCriaturas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
